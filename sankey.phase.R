@@ -1,17 +1,19 @@
-setwd("X:/Trans/STAFF/Reid/Project Tracking/phase_analysis")
 library(xlsx)
 library(googleVis)
 library(dplyr)
+library(digest)
 library(networkD3)
+library(plyr)
 library(rCharts)
 library(rjson)
 library(devtools)
+
+setwd("X:/Trans/STAFF/Reid/Project Tracking/phase_analysis")
 
 phase<-read.xlsx("PhaseAnalysisForAllAwardsSince2012.xlsx", sheetName="tidy_data")
 phase$summary<-phase$Award.Type
 phase$summary<-gsub(".*Construction.*","Includes Construction",phase$Award.Type)
 phase_select<-phase %>% select( process2,summary, Amount)
-phase_select<-phase_select%>% group_by(process2,summary) %>% summarise(total=sum(Amount)) %>% as.data.frame()
 colnames(phase_select) <- c("source", "target", "value")
 
 sankeyPlot <- rCharts$new()
